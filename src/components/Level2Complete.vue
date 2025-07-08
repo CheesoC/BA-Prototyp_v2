@@ -1,5 +1,24 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, RouterLink } from 'vue-router'
+
+const route = useRoute()
+
+// Prüfe ob wir in einer Studie sind
+const prototypeId = computed(() => {
+  return route.query.p ? parseInt(route.query.p) : null
+})
+
+// Erstelle die richtige Weiter-URL
+const nextUrl = computed(() => {
+  if (prototypeId.value) {
+    // In Studie: Weiter zu Level 3 mit Prototyp-Parameter
+    return `/study?p=${prototypeId.value}&l=3`
+  } else {
+    // Standalone: normale Navigation
+    return '/level-3'
+  }
+})
 </script>
 
 <template>
@@ -23,7 +42,7 @@ import { RouterLink } from 'vue-router'
         <h2 class="closing-title">Sie dürfen vor dem Start gerne eine kurze Pause einlegen</h2>
       </div>
       <div class="action-area">
-        <RouterLink to="/level-3" class="start-button">
+        <RouterLink :to="nextUrl" class="start-button">
           Weiter
         </RouterLink>
       </div>

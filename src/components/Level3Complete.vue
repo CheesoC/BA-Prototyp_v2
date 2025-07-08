@@ -1,5 +1,35 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+// Prüfe ob wir in einer Studie sind
+const prototypeId = computed(() => {
+  return route.query.p ? parseInt(route.query.p) : null
+})
+
+// Prototyp-Sequenzen für Anzeige
+const prototypSequences = {
+  1: ['A', 'B', 'C'],
+  2: ['A', 'C', 'B'],
+  3: ['B', 'A', 'C'],
+  4: ['B', 'C', 'A'],
+  5: ['C', 'A', 'B'],
+  6: ['C', 'B', 'A']
+}
+
+const variantNames = {
+  'A': 'Kein Feedback',
+  'B': 'Visuelles Feedback', 
+  'C': 'Multimodales Feedback'
+}
+
+const completedSequence = computed(() => {
+  if (!prototypeId.value) return null
+  const sequence = prototypSequences[prototypeId.value]
+  return sequence ? sequence.map(variant => variantNames[variant]) : null
+})
 </script>
 
 <template>
@@ -19,6 +49,17 @@ import { RouterLink } from 'vue-router'
         </ul>
       </div>
       <div class="closing-message">
+        <div v-if="prototypeId" class="study-info">
+          <h4>Abgeschlossener Prototyp: {{ prototypeId }}</h4>
+          <div v-if="completedSequence" class="sequence-info">
+            <p>Getestete Reihenfolge:</p>
+            <ol>
+              <li v-for="(variant, index) in completedSequence" :key="index">
+                Level {{ index + 1 }}: {{ variant }}
+              </li>
+            </ol>
+          </div>
+        </div>
         <h3 class="closing-title">Vergessen Sie am Ende bitte nicht das Frageformular zu speichern und abzusenden!!!</h3>
         <h2 class="closing-title">Vielen Dank für Ihre Teilnahme!</h2>
         <h2 class="closing-title">Sie können jetzt die Seite schließen</h2>
@@ -158,6 +199,35 @@ import { RouterLink } from 'vue-router'
 
 .start-button:active {
   transform: translateY(-1px);
+}
+
+.study-info {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.study-info h4 {
+  margin-bottom: 1rem;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.sequence-info p {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.sequence-info ol {
+  text-align: left;
+  margin: 0;
+}
+
+.sequence-info li {
+  margin: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Responsive Design */

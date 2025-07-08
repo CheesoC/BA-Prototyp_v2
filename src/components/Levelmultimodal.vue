@@ -2,7 +2,7 @@
   <div class="level-one">
     <!-- Oberer Balken mit Level und Titel -->
     <div class="header-bar">
-      <h1 class="level-title">Level 2: Multimodal</h1>
+      <h1 class="level-title">Level Multimodal</h1>
     </div>
 
     <!-- Mittlerer Bereich mit Aufgabe -->
@@ -104,19 +104,25 @@
       </div>
       
       <!-- Nur Weiter Button für Level Complete Screen -->
-      <router-link 
+      <button
         v-if="showSummary"
-        to="/level-2-complete"
+        @click="handleFinalContinue"
         class="continue-button final-button"
       >
         Weiter
-      </router-link>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+// Event emitter für parent component
+const emit = defineEmits(['level-complete'])
 
 // Reactive data
 const selectedAnswer = ref(null)
@@ -352,6 +358,19 @@ watch(showSummary, (newValue) => {
     playLevelCompleteSound(isSuccess)
   }
 })
+
+// Handler für finalen Weiter-Button
+const handleFinalContinue = () => {
+  // Prüfe ob wir in einer Studie sind (URL enthält Parameter)
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.has('p')) {
+    // In Studie: Event an parent emittieren
+    emit('level-complete')
+  } else {
+    // Standalone: normale Navigation
+    router.push('/level-2-complete')
+  }
+}
 </script>
 
 <style scoped>

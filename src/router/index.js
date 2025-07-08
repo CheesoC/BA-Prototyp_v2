@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Level1visuellView from '@/views/Level1visuellView.vue'
+import LevelvisuellView from '@/views/LevelvisuellView.vue'
 import Level1CompleteView from '@/views/Level1CompleteView.vue'
-import Level2multimodalView from '@/views/Level2multimodalView.vue'
-import Level3ohneFeedbackView from '@/views/Level3ohneFeedbackView.vue'
+import LevelmultimodalView from '@/views/LevelmultimodalView.vue'
+import LevelohneFeedbackView from '@/views/LevelohneFeedbackView.vue'
 import Level2CompleteView from '@/views/Level2CompleteView.vue'
-import Level3Complete from '@/components/Level3Complete.vue'
+import Level3CompleteView from '@/views/Level3CompleteView.vue'
+import StudyView from '@/views/StudyView.vue'
 
 
 const router = createRouter({
@@ -16,10 +17,17 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    // Studien-Route
+    {
+      path: '/study',
+      name: 'study',
+      component: StudyView,
+    },
+    // Bestehende einzelne Level (für Backup/Demo)
     {
       path: '/level-1',
       name: 'level-1',
-      component: Level1visuellView,
+      component: LevelvisuellView,
     },
     { path: '/level-1-complete',
       name: 'level-1-complete',
@@ -27,7 +35,7 @@ const router = createRouter({
     },
     { path: '/level-2',
       name: 'level-2',
-      component: Level2multimodalView,
+      component: LevelmultimodalView,
     },
     { path: '/level-2-complete',
       name: 'level-2-complete',
@@ -35,14 +43,12 @@ const router = createRouter({
     },
     { path: '/level-3',
       name: 'level-3',
-      component: Level3ohneFeedbackView,
+      component: LevelohneFeedbackView,
     },
     { path: '/level-3-complete',
       name: 'level-3-complete',
-      component: Level3Complete,
+      component: Level3CompleteView,
     },
-
-
   ],
 })
 
