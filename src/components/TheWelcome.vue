@@ -1,5 +1,22 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, RouterLink } from 'vue-router'
+
+const route = useRoute()
+
+// Prototyp aus URL-Parameter lesen
+const prototypeId = computed(() => {
+  const p = route.query.p
+  return p ? parseInt(p) : null
+})
+
+// Start-URL erstellen - berücksichtigt Prototyp-Parameter
+const studyStartUrl = computed(() => {
+  if (prototypeId.value) {
+    return `/?p=${prototypeId.value}&l=1`
+  }
+  return '/level-1' // Fallback für direkten Zugriff ohne Parameter
+})
 </script>
 
 <template>
@@ -22,7 +39,7 @@ import { RouterLink } from 'vue-router'
         <h2 class="closing-title">Viel Spaß und Danke für Ihre Teilnahme!</h2>
       </div>
       <div class="action-area">
-        <RouterLink to="/level-1" class="start-button">
+        <RouterLink :to="studyStartUrl" class="start-button">
           Studie starten
         </RouterLink>
       </div>

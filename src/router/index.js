@@ -6,7 +6,6 @@ import LevelmultimodalView from '@/views/LevelmultimodalView.vue'
 import LevelohneFeedbackView from '@/views/LevelohneFeedbackView.vue'
 import Level2CompleteView from '@/views/Level2CompleteView.vue'
 import Level3CompleteView from '@/views/Level3CompleteView.vue'
-import StudyView from '@/views/StudyView.vue'
 
 
 const router = createRouter({
@@ -16,12 +15,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    },
-    // Studien-Route
-    {
-      path: '/study',
-      name: 'study',
-      component: StudyView,
     },
     // Bestehende einzelne Level (für Backup/Demo)
     {
