@@ -42,6 +42,11 @@ const router = createRouter({
       name: 'level-3-complete',
       component: Level3CompleteView,
     },
+    // Fallback route für unbekannte Pfade
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
+    }
   ],
 })
 

@@ -13,7 +13,7 @@ const prototypeId = computed(() => {
 const nextUrl = computed(() => {
   if (prototypeId.value) {
     // In Studie: Weiter zu Level 2 mit Prototyp-Parameter
-    return `/study?p=${prototypeId.value}&l=2`
+    return `/?p=${prototypeId.value}&l=2`
   } else {
     // Standalone: normale Navigation
     return '/level-2'
