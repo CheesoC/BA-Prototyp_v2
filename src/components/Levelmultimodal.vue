@@ -2,7 +2,7 @@
   <div class="level-one">
     <!-- Oberer Balken mit Level und Titel -->
     <div class="header-bar">
-      <h1 class="level-title">Level Multimodal</h1>
+      <h1 class="level-title">Level - Addition</h1>
     </div>
 
     <!-- Mittlerer Bereich mit Aufgabe -->

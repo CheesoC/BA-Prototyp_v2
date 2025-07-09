@@ -49,18 +49,7 @@ const completedSequence = computed(() => {
         </ul>
       </div>
       <div class="closing-message">
-        <div v-if="prototypeId" class="study-info">
-          <h4>Abgeschlossener Prototyp: {{ prototypeId }}</h4>
-          <div v-if="completedSequence" class="sequence-info">
-            <p>Getestete Reihenfolge:</p>
-            <ol>
-              <li v-for="(variant, index) in completedSequence" :key="index">
-                Level {{ index + 1 }}: {{ variant }}
-              </li>
-            </ol>
-          </div>
-        </div>
-        <h3 class="closing-title">Vergessen Sie am Ende bitte nicht das Frageformular zu speichern und abzusenden!!!</h3>
+        <h3 class="closing-title">Vergessen Sie am Ende bitte nicht das Frageformular abzusenden!!!</h3>
         <h2 class="closing-title">Vielen Dank für Ihre Teilnahme!</h2>
         <h2 class="closing-title">Sie können jetzt die Seite schließen</h2>
       </div>
