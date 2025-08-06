@@ -24,26 +24,34 @@ const nextUrl = computed(() => {
 <template>
   <div class="landing-page">
     <div class="content-container">
-      <h1 class="main-title">Level 1 abgeschlossen!</h1>
+      <h1 class="main-title">System 1 abgeschlossen!</h1>
       <p class="description">
-        Nurnoch zwei weitere Level und die Studie ist abgeschlossen
+        Zwei Systeme liegen noch vor Ihnen – vielen Dank für Ihre bisherige Teilnahme!
       </p>
       <div class="task-section">
-        <h2 class="task-title">Ihre Aufgabe:</h2>
+        <h2 class="task-title">Was Sie jetzt tun sollen:</h2>
         <ul class="task-list">
-          <li>Wechseln Sie jetzt zum Fragebogen</li>
-          <li>Füllen Sie den Fragebogen bitte nur bis zum gekennzeichneten Bereich aus</li>
-          <li>Bitte ändern Sie im Nachhinein nichts mehr an Ihren Antworten</li>
-          <li>Erst wenn erster Fragebogen + Zusatzfragen ausgefüllt: Drücken Sie auf "Weiter" um mit Level 2 zu starten</li>
+          <li>Nachdem Sie alle Stichpunkte gelesen haben, wechseln Sie bitte bei der expliziten Aufforderung zum Fragebogen 1.</li>
+          <li>Füllen Sie den Fragebogen 1 bitte vollständig bis zum gekennzeichneten Abschnitt aus und drücken Sie auf "Weiter".</li>
+          <li>Sobald alle Fragen zu System 1 beantwortet sind, erhalten Sie einen Hinweis, um zu dieser Seite zurückzukehren und mit System 2 fortzufahren.</li>
+          <li>Nehmen Sie sich gerne so viel Zeit wie nötig – besonders bei den Freitextfeldern freuen wir uns über ausführliche Rückmeldungen.</li>
         </ul>
+
+        <div class="disclaimer">
+          <h3 class="disclaimer-title">Hinweis:</h3>
+          <p class="disclaimer-text">
+            Wechseln Sie bitte JETZT zum Fragebogen 1 und beantworten Sie die Fragen zu System 1.  
+            Sobald Sie fertig sind, kehren Sie hierher zurück, um mit System 2 fortzufahren.
+          </p>
+        </div>
       </div>
       <div class="closing-message">
-        <h3 class="closing-title">Nach dem Drücken des Buttons startet das zweite Level</h3>
-        <h2 class="closing-title">Sie dürfen vor dem Start gerne eine kurze Pause einlegen</h2>
+        <h3 class="closing-title">Klicken Sie unten auf den Button, um mit System 2 zu starten.</h3>
+        <h2 class="closing-title">Sie können vor dem nächsten System gerne eine kurze Pause einlegen.</h2>
       </div>
       <div class="action-area">
         <RouterLink :to="nextUrl" class="start-button">
-          Weiter
+          System 2 starten
         </RouterLink>
       </div>
     </div>
@@ -69,36 +77,45 @@ const nextUrl = computed(() => {
   text-align: center;
   max-width: 800px;
   width: 100%;
-  padding: 3rem 2rem;
+  padding: 1.5rem 2rem;
   color: white;
 }
 
 .main-title {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
   color: white;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.8rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .description {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
   font-weight: 400;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .task-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .task-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sub-note {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  font-weight: 400;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -112,14 +129,15 @@ const nextUrl = computed(() => {
 }
 
 .task-list li {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.95);
-  line-height: 1.6;
-  padding: 0.8rem 0;
+  line-height: 1.4;
+  padding: 0.4rem 0;
   position: relative;
   padding-left: 2rem;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
+  text-align: justify;
 }
 
 .task-list li::before {
@@ -128,11 +146,11 @@ const nextUrl = computed(() => {
   font-weight: bold;
   position: absolute;
   left: 0;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   background: white;
   border-radius: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.3rem;
+  height: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,16 +158,16 @@ const nextUrl = computed(() => {
 }
 
 .closing-message {
-  margin-bottom: 2.5rem;
-  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 0.8rem;
 }
 
 .closing-title {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: white;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 .action-area {
@@ -183,6 +201,36 @@ const nextUrl = computed(() => {
   transform: translateY(-1px);
 }
 
+.disclaimer {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 15px;
+  padding: 1rem;
+  margin-top: 1.2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.disclaimer-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFD700;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.disclaimer-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 500;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  text-align: justify;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .main-title {
@@ -207,6 +255,18 @@ const nextUrl = computed(() => {
   
   .content-container {
     padding: 2rem 1.5rem;
+  }
+  
+  .disclaimer {
+    padding: 1.2rem;
+  }
+  
+  .disclaimer-title {
+    font-size: 1.2rem;
+  }
+  
+  .disclaimer-text {
+    font-size: 1.1rem;
   }
 }
 
@@ -238,6 +298,18 @@ const nextUrl = computed(() => {
   
   .content-container {
     padding: 1.5rem 1rem;
+  }
+  
+  .disclaimer {
+    padding: 1rem;
+  }
+  
+  .disclaimer-title {
+    font-size: 1.1rem;
+  }
+  
+  .disclaimer-text {
+    font-size: 1rem;
   }
 }
 </style>

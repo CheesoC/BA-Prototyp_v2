@@ -23,20 +23,28 @@ const studyStartUrl = computed(() => {
   <div class="landing-page">
     <div class="content-container">
       <h1 class="main-title">Willkommen zur Studie</h1>
-      <p class="description">
-        Sie testen heute einen Prototypen für eine Digitale Aufgabenumgebung
-      </p>
+       <p class="description">
+         Sie testen heute drei unterschiedliche Varianten einer digitalen Aufgabenumgebung. Wir nennen sie System 1, System 2 und System 3.
+        </p>
       <div class="task-section">
         <h2 class="task-title">Ihre Aufgabe:</h2>
         <ul class="task-list">
-          <li>Spielen Sie bitte alle 3 Level mit jeweils 8 Fragen durch</li>
-          <li>Nach jedem Level wechseln Sie zurück zum Fragebogen und füllen ihn bis zur gekennzeichneten Stelle aus</li>
-          <li>Es gibt kein richtig oder falsch, probieren Sie einfach alles aus, Antworten sie bitte auch bitte mindestens einmal Falsch, um zu sehen wie die Seite reagiert</li>
+          <li>Bitte nehmen Sie sich für jedes System und den jeweiligen Fragebogen Zeit und lesen Sie alles in Ruhe durch, bevor Sie fortfahren.</li>
+          <li>Bearbeiten Sie bitte alle drei Systeme mit gleicher Aufmerksamkeit – jedes System enthält 6 Aufgaben.</li>
+          <li>Nach der Bearbeitung eines Systems erscheint eine neue Seite, die Ihnen die weiteren Schritte erklärt.</li>
+          <li>Probieren Sie bitte auch falsche Eingaben aus, um zu sehen, wie das jeweilige System darauf reagiert. Ihre Ergebnisse fließen in keine Bewertung ein.</li>
         </ul>
+        
+        <div class="disclaimer">
+  <h3 class="disclaimer-title">Hinweis:</h3>
+  <p class="disclaimer-text">
+    In dieser Studie liegt der Fokus nicht auf dem Inhalt der Aufgaben, sondern auf Ihrem persönlichen Erleben und der Nutzung des jeweiligen Systems.
+  </p>
+</div>
       </div>
       <div class="closing-message">
-        <h3 class="closing-title">Nach dem Drücken des Buttons startet das erste Level</h3>
-        <h2 class="closing-title">Viel Spaß und Danke für Ihre Teilnahme!</h2>
+        <h3 class="closing-title">Klicken Sie unten auf den Button, um mit System 1 zu starten.</h3>
+        <h2 class="closing-title">Vielen Dank für Ihre Teilnahme und viel Spaß!</h2>
       </div>
       <div class="action-area">
         <RouterLink :to="studyStartUrl" class="start-button">
@@ -66,36 +74,45 @@ const studyStartUrl = computed(() => {
   text-align: center;
   max-width: 800px;
   width: 100%;
-  padding: 3rem 2rem;
+  padding: 1.5rem 2rem;
   color: white;
 }
 
 .main-title {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
   color: white;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.8rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .description {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
   font-weight: 400;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .task-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .task-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sub-note {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  font-weight: 400;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -109,14 +126,15 @@ const studyStartUrl = computed(() => {
 }
 
 .task-list li {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.95);
-  line-height: 1.6;
-  padding: 0.8rem 0;
+  line-height: 1.4;
+  padding: 0.4rem 0;
   position: relative;
   padding-left: 2rem;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
+  text-align: justify;
 }
 
 .task-list li::before {
@@ -125,11 +143,11 @@ const studyStartUrl = computed(() => {
   font-weight: bold;
   position: absolute;
   left: 0;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   background: white;
   border-radius: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.3rem;
+  height: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,16 +155,16 @@ const studyStartUrl = computed(() => {
 }
 
 .closing-message {
-  margin-bottom: 2.5rem;
-  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 0.8rem;
 }
 
 .closing-title {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: white;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 .action-area {
@@ -180,6 +198,36 @@ const studyStartUrl = computed(() => {
   transform: translateY(-1px);
 }
 
+.disclaimer {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 15px;
+  padding: 1rem;
+  margin-top: 1.2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.disclaimer-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFD700;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.disclaimer-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 500;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  text-align: justify;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .main-title {
@@ -204,6 +252,18 @@ const studyStartUrl = computed(() => {
   
   .content-container {
     padding: 2rem 1.5rem;
+  }
+  
+  .disclaimer {
+    padding: 1.2rem;
+  }
+  
+  .disclaimer-title {
+    font-size: 1.2rem;
+  }
+  
+  .disclaimer-text {
+    font-size: 1.1rem;
   }
 }
 
@@ -235,6 +295,18 @@ const studyStartUrl = computed(() => {
   
   .content-container {
     padding: 1.5rem 1rem;
+  }
+  
+  .disclaimer {
+    padding: 1rem;
+  }
+  
+  .disclaimer-title {
+    font-size: 1.1rem;
+  }
+  
+  .disclaimer-text {
+    font-size: 1rem;
   }
 }
 </style>
