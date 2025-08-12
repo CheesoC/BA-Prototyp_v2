@@ -48,7 +48,7 @@ const studyStartUrl = computed(() => {
       </div>
       <div class="action-area">
         <RouterLink :to="studyStartUrl" class="start-button">
-          Studie starten
+          System 1 starten
         </RouterLink>
       </div>
     </div>

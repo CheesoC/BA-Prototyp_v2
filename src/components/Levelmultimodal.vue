@@ -2,7 +2,7 @@
   <div class="level-one">
     <!-- Oberer Balken mit Level und Titel -->
     <div class="header-bar">
-      <h1 class="level-title">Level - Addition</h1>
+      <h1 class="level-title">{{ systemTitle }}</h1>
     </div>
 
     <!-- Mittlerer Bereich mit Aufgabe -->
@@ -117,13 +117,26 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 // Event emitter für parent component
 const emit = defineEmits(['level-complete'])
 
+// System-Titel basierend auf aktueller Position in der Studie
+const systemTitle = computed(() => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const level = urlParams.get('l')
+  
+  if (level) {
+    return `System ${level}`
+  } else {
+    // Fallback für Standalone-Modus
+    return 'Level - Grundlagen der Mathematik'
+  }
+})
 // Reactive data
 const selectedAnswer = ref(null)
 const currentQuestionIndex = ref(0)
@@ -131,29 +144,32 @@ const questionResults = ref({}) // Speichert die Ergebnisse: true = richtig, fal
 const showResults = ref(false) // Zeigt ob Ergebnisse angezeigt werden sollen
 const showSummary = ref(false) // Kontrolle für die Anzeige der Zusammenfassung
 
-// Positive Feedback-Texte
-const positiveFeedbackTexts = ref([
+// Positive Feedback-Texte (Original-Arrays)
+const originalPositiveFeedbackTexts = [
   "Sehr gut!",
   "Richtig!", 
   "Großartig!",
   "Perfekt!",
   "Ausgezeichnet!",
-  "Fantastisch!",
+  "Weiter so!",
   "Super!",
   "Klasse!"
-])
+]
 
-// Neutrale Feedback-Texte für falsche Antworten
-const neutralFeedbackTexts = ref([
-  "Nicht ganz",
-  "Fast",
-  "Versuche es nochmal",
-  "Das war knapp",
-  "Andere Antwort",
-  "Probiere weiter",
-  "Gleich geschafft",
-  "Weiter so"
-])
+const originalNeutralFeedbackTexts = [
+  "Nicht ganz!",
+  "Fast!",
+  "Schade, beim nächsten Mal!",
+  "Das war knapp!",
+  "Andere Antwort!",
+  "Probiere weiter!",
+  "Nicht entmutigen lassen!",
+  "Schau nochmal genau hin!"
+]
+
+// Feedback-Texte für das aktuelle Level (werden reduziert)
+const positiveFeedbackTexts = ref([...originalPositiveFeedbackTexts])
+const neutralFeedbackTexts = ref([...originalNeutralFeedbackTexts])
 
 const currentFeedbackText = ref("")
 
@@ -166,20 +182,20 @@ const playClickSound = () => {
 
 const playCorrectSound = () => {
   const audio = new Audio('/sounds/correct.mp3') // Pfad zu Ihrer "richtig"-Audiodatei
-  audio.volume = 0.5
+  audio.volume = 0.1
   audio.play().catch(e => console.log('Audio play failed:', e))
 }
 
 const playIncorrectSound = () => {
   const audio = new Audio('/sounds/incorrect.mp3') // Pfad zu Ihrer "falsch"-Audiodatei
-  audio.volume = 0.4
+  audio.volume = 0.1
   audio.play().catch(e => console.log('Audio play failed:', e))
 }
 
 const playLevelCompleteSound = (isSuccess) => {
   const soundFile = isSuccess ? '/sounds/levelsucess.mp3' : '/sounds/levelfail.mp3'
   const audio = new Audio(soundFile) // Je nach Erfolg verschiedene Audiodateien
-  audio.volume = 0.6
+  audio.volume = 0.1
   audio.play().catch(e => console.log('Audio play failed:', e))
 }
 
@@ -187,93 +203,41 @@ const playLevelCompleteSound = (isSuccess) => {
 const questions = ref([
   {
     id: 1,
-    question: "Was ist 4 + 6?",
-    options: [
-      "9",
-      "10", 
-      "11",
-      "8"
-    ],
+    question: "Was ist 23 + 19?",
+    options: ["41", "42", "43", "40"],
     correctAnswer: 1
   },
   {
     id: 2,
-    question: "Was ist 8 - 3?",
-    options: [
-      "5",
-      "4", 
-      "6",
-      "7"
-    ],
+    question: "Was ist 90 - 8 × 9?",
+    options: ["18", "16", "20", "22"],
     correctAnswer: 0
   },
   {
     id: 3,
-    question: "Was ist 3 × 2?",
-    options: [
-      "5",
-      "7", 
-      "6",
-      "8"
-    ],
-    correctAnswer: 2
+    question: "Was ist 58 - 27?",
+    options: ["29", "31", "32", "30"],
+    correctAnswer: 1
   },
   {
     id: 4,
-    question: "Was ist 5 + 4?",
-    options: [
-      "8",
-      "10", 
-      "9",
-      "7"
-    ],
-    correctAnswer: 2
+    question: "Was ist 16 × 5?",
+    options: ["75", "80", "85", "70"],
+    correctAnswer: 1
   },
   {
     id: 5,
-    question: "Was ist 9 - 6?",
-    options: [
-      "4",
-      "3", 
-      "2",
-      "5"
-    ],
+    question: "Was ist (7 + 6) × 3?",
+    options: ["36", "39", "42", "33"],
     correctAnswer: 1
   },
   {
     id: 6,
-    question: "Was ist 2 × 5?",
-    options: [
-      "8",
-      "12", 
-      "10",
-      "9"
-    ],
-    correctAnswer: 2
+    question: "Was ist 81 ÷ 9 + 12?",
+    options: ["20", "21", "22", "19"],
+    correctAnswer: 1
   },
-  {
-    id: 7,
-    question: "Was ist 7 + 1?",
-    options: [
-      "8",
-      "9", 
-      "7",
-      "6"
-    ],
-    correctAnswer: 0
-  },
-  {
-    id: 8,
-    question: "Was ist 10 - 4?",
-    options: [
-      "5",
-      "7", 
-      "6",
-      "4"
-    ],
-    correctAnswer: 2
-  }
-])
+]);
 
 // Computed
 const currentQuestion = computed(() => {
@@ -312,13 +276,27 @@ const checkAnswer = () => {
       playIncorrectSound() // Tieferer Klang für falsche Antwort
     }
     
-    // Wähle passenden Feedback-Text
+    // Wähle passenden Feedback-Text ohne Wiederholung
     if (isCorrect) {
-      const randomIndex = Math.floor(Math.random() * positiveFeedbackTexts.value.length)
-      currentFeedbackText.value = positiveFeedbackTexts.value[randomIndex]
+      if (positiveFeedbackTexts.value.length > 0) {
+        const randomIndex = Math.floor(Math.random() * positiveFeedbackTexts.value.length)
+        currentFeedbackText.value = positiveFeedbackTexts.value[randomIndex]
+        // Entferne den verwendeten Text, damit er nicht nochmal verwendet wird
+        positiveFeedbackTexts.value.splice(randomIndex, 1)
+      } else {
+        // Fallback falls alle Texte aufgebraucht sind
+        currentFeedbackText.value = "Richtig!"
+      }
     } else {
-      const randomIndex = Math.floor(Math.random() * neutralFeedbackTexts.value.length)
-      currentFeedbackText.value = neutralFeedbackTexts.value[randomIndex]
+      if (neutralFeedbackTexts.value.length > 0) {
+        const randomIndex = Math.floor(Math.random() * neutralFeedbackTexts.value.length)
+        currentFeedbackText.value = neutralFeedbackTexts.value[randomIndex]
+        // Entferne den verwendeten Text, damit er nicht nochmal verwendet wird
+        neutralFeedbackTexts.value.splice(randomIndex, 1)
+      } else {
+        // Fallback falls alle Texte aufgebraucht sind
+        currentFeedbackText.value = "Nicht ganz!"
+      }
     }
     
     // Zeige die Ergebnisse (Farben) an
@@ -337,7 +315,7 @@ const continueToNext = () => {
     if (Object.keys(questionResults.value).length === questions.value.length) {
       showSummary.value = true
     }
-    console.log('Level 2 abgeschlossen!')
+    console.log('System abgeschlossen!')
   } else {
     // Nächste Frage
     nextQuestion()

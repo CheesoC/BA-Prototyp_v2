@@ -2,7 +2,7 @@
   <div class="level-one">
     <!-- Oberer Balken mit Level und Titel -->
     <div class="header-bar">
-      <h1 class="level-title">Level - Addition</h1>
+      <h1 class="level-title">{{ systemTitle }}</h1>
     </div>
 
     <!-- Mittlerer Bereich mit Aufgabe -->
@@ -117,12 +117,26 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 // Event emitter für parent component
 const emit = defineEmits(['level-complete'])
+
+// System-Titel basierend auf aktueller Position in der Studie
+const systemTitle = computed(() => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const level = urlParams.get('l')
+  
+  if (level) {
+    return `System ${level}`
+  } else {
+    // Fallback für Standalone-Modus
+    return 'Level - Grundlagen der Mathematik'
+  }
+})
 
 // Reactive data
 const selectedAnswer = ref(null)
@@ -131,29 +145,32 @@ const questionResults = ref({}) // Speichert die Ergebnisse: true = richtig, fal
 const showResults = ref(false) // Zeigt ob Ergebnisse angezeigt werden sollen
 const showSummary = ref(false) // Kontrolle für die Anzeige der Zusammenfassung
 
-// Positive Feedback-Texte
-const positiveFeedbackTexts = ref([
+// Positive Feedback-Texte (Original-Arrays)
+const originalPositiveFeedbackTexts = [
   "Sehr gut!",
   "Richtig!", 
   "Großartig!",
   "Perfekt!",
   "Ausgezeichnet!",
-  "Fantastisch!",
+  "Weiter so!",
   "Super!",
   "Klasse!"
-])
+]
 
-// Neutrale Feedback-Texte für falsche Antworten
-const neutralFeedbackTexts = ref([
-  "Nicht ganz",
-  "Fast",
-  "Versuche es nochmal",
-  "Das war knapp",
-  "Andere Antwort",
-  "Probiere weiter",
-  "Gleich geschafft",
-  "Weiter so"
-])
+const originalNeutralFeedbackTexts = [
+  "Nicht ganz!",
+  "Fast!",
+  "Schade, beim nächsten Mal!",
+  "Das war knapp!",
+  "Andere Antwort!",
+  "Probiere weiter!",
+  "Nicht entmutigen lassen!",
+  "Schau nochmal genau hin!"
+]
+
+// Feedback-Texte für das aktuelle Level (werden reduziert)
+const positiveFeedbackTexts = ref([...originalPositiveFeedbackTexts])
+const neutralFeedbackTexts = ref([...originalNeutralFeedbackTexts])
 
 const currentFeedbackText = ref("")
 
@@ -161,93 +178,41 @@ const currentFeedbackText = ref("")
 const questions = ref([
   {
     id: 1,
-    question: "Was ist 3 + 5?",
-    options: [
-      "7",
-      "8", 
-      "9",
-      "6"
-    ],
+    question: "Was ist 18 + 16?",
+    options: ["33", "34", "35", "32"],
     correctAnswer: 1
   },
   {
     id: 2,
-    question: "Was ist 9 - 4?",
-    options: [
-      "5",
-      "4", 
-      "6",
-      "3"
-    ],
-    correctAnswer: 0
+    question: "Was ist 120 - 11 × 7?",
+    options: ["47", "43", "45", "42"],
+    correctAnswer: 1
   },
   {
     id: 3,
-    question: "Was ist 2 × 4?",
-    options: [
-      "6",
-      "7", 
-      "10",
-      "8"
-    ],
-    correctAnswer: 3
-  },
-  {
-    id: 4,
-    question: "Was ist 7 + 2?",
-    options: [
-      "8",
-      "11", 
-      "9",
-      "10"
-    ],
+    question: "Was ist 67 - 29?",
+    options: ["36", "39", "38", "37"],
     correctAnswer: 2
   },
   {
+    id: 4,
+    question: "Was ist 13 × 4?",
+    options: ["48", "52", "54", "56"],
+    correctAnswer: 1
+  },
+  {
     id: 5,
-    question: "Was ist 10 - 3?",
-    options: [
-      "6",
-      "7", 
-      "9",
-      "8"
-    ],
+    question: "Was ist (6 + 4) × 5?",
+    options: ["45", "50", "55", "40"],
     correctAnswer: 1
   },
   {
     id: 6,
-    question: "Was ist 3 × 3?",
-    options: [
-      "8",
-      "6", 
-      "10",
-      "9"
-    ],
-    correctAnswer: 3
+    question: "Was ist 36 ÷ 6 + 14?",
+    options: ["18", "19", "20", "22"],
+    correctAnswer: 2
   },
-  {
-    id: 7,
-    question: "Was ist 6 + 3?",
-    options: [
-      "9",
-      "8", 
-      "10",
-      "7"
-    ],
-    correctAnswer: 0
-  },
-  {
-    id: 8,
-    question: "Was ist 8 - 2?",
-    options: [
-      "5",
-      "4", 
-      "7",
-      "6"
-    ],
-    correctAnswer: 3
-  }
-])
+]);
 
 // Computed
 const currentQuestion = computed(() => {
@@ -278,13 +243,27 @@ const checkAnswer = () => {
     // Speichere das Ergebnis
     questionResults.value[currentQuestionIndex.value] = isCorrect
     
-    // Wähle passenden Feedback-Text
+    // Wähle passenden Feedback-Text ohne Wiederholung
     if (isCorrect) {
-      const randomIndex = Math.floor(Math.random() * positiveFeedbackTexts.value.length)
-      currentFeedbackText.value = positiveFeedbackTexts.value[randomIndex]
+      if (positiveFeedbackTexts.value.length > 0) {
+        const randomIndex = Math.floor(Math.random() * positiveFeedbackTexts.value.length)
+        currentFeedbackText.value = positiveFeedbackTexts.value[randomIndex]
+        // Entferne den verwendeten Text, damit er nicht nochmal verwendet wird
+        positiveFeedbackTexts.value.splice(randomIndex, 1)
+      } else {
+        // Fallback falls alle Texte aufgebraucht sind
+        currentFeedbackText.value = "Richtig!"
+      }
     } else {
-      const randomIndex = Math.floor(Math.random() * neutralFeedbackTexts.value.length)
-      currentFeedbackText.value = neutralFeedbackTexts.value[randomIndex]
+      if (neutralFeedbackTexts.value.length > 0) {
+        const randomIndex = Math.floor(Math.random() * neutralFeedbackTexts.value.length)
+        currentFeedbackText.value = neutralFeedbackTexts.value[randomIndex]
+        // Entferne den verwendeten Text, damit er nicht nochmal verwendet wird
+        neutralFeedbackTexts.value.splice(randomIndex, 1)
+      } else {
+        // Fallback falls alle Texte aufgebraucht sind
+        currentFeedbackText.value = "Nicht ganz!"
+      }
     }
     
     // Zeige die Ergebnisse (Farben) an

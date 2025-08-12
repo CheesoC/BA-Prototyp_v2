@@ -2,7 +2,7 @@
   <div class="level-one">
     <!-- Oberer Balken mit Level und Titel -->
     <div class="header-bar">
-      <h1 class="level-title">Level - Addition</h1>
+      <h1 class="level-title">{{ systemTitle }}</h1>
     </div>
 
     <!-- Mittlerer Bereich mit Aufgabe -->
@@ -16,9 +16,6 @@
             v-for="(option, index) in currentQuestion.options" 
             :key="index"
             class="answer-button"
-            :class="{ 
-              'selected': selectedAnswer === index
-            }"
             @click="selectAnswer(index)"
           >
             {{ option }}
@@ -32,7 +29,7 @@
         
         <div class="summary-score">
           <h1 class="score-text">Dein Ergebnis:</h1>
-          <span class="score-text">{{ correctAnswersCount }}/{{ questions.length }} richtig</span>
+          <span class="score-text">{{ correctAnswersCount }}/{{ questions.length }}</span>
         </div>
       </div>
     </div>
@@ -43,7 +40,6 @@
       <button 
         v-if="!isLevelComplete"
         class="check-button"
-        :disabled="selectedAnswer === null"
         @click="checkAnswer"
       >
         Überprüfen
@@ -63,109 +59,71 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 // Event emitter für parent component
 const emit = defineEmits(['level-complete'])
+
+// System-Titel basierend auf aktueller Position in der Studie
+const systemTitle = computed(() => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const level = urlParams.get('l')
+  
+  if (level) {
+    return `System ${level}`
+  } else {
+    // Fallback für Standalone-Modus
+    return 'Level - Grundlagen der Mathematik'
+  }
+})
 
 // Reactive data
 const selectedAnswer = ref(null)
 const currentQuestionIndex = ref(0)
 const questionResults = ref({}) // Speichert die Ergebnisse: true = richtig, false = falsch
 
-// Sample questions for Level 3
+// Sample questions System ohne Feedback
 const questions = ref([
   {
     id: 1,
-    question: "Was ist 3 + 5?",
-    options: [
-      "7",
-      "8", 
-      "9",
-      "6"
-    ],
+    question: "Was ist 12 + 17?",
+    options: ["27", "29", "30", "31"],
     correctAnswer: 1
   },
   {
     id: 2,
-    question: "Was ist 9 - 4?",
-    options: [
-      "5",
-      "4", 
-      "6",
-      "3"
-    ],
-    correctAnswer: 0
+    question: "Was ist 100 - 12 × 6?",
+    options: ["24", "26", "28", "32"],
+    correctAnswer: 2
   },
   {
     id: 3,
-    question: "Was ist 2 × 4?",
-    options: [
-      "6",
-      "7", 
-      "10",
-      "8"
-    ],
-    correctAnswer: 3
+    question: "Was ist 45 - 28?",
+    options: ["15", "16", "17", "18"],
+    correctAnswer: 2
   },
   {
     id: 4,
-    question: "Was ist 7 + 2?",
-    options: [
-      "8",
-      "11", 
-      "9",
-      "10"
-    ],
+    question: "Was ist 14 × 3?",
+    options: ["40", "41", "42", "43"],
     correctAnswer: 2
   },
   {
     id: 5,
-    question: "Was ist 10 - 3?",
-    options: [
-      "6",
-      "7", 
-      "9",
-      "8"
-    ],
+    question: "Was ist (5 + 3) × 4?",
+    options: ["30", "32", "34", "36"],
     correctAnswer: 1
   },
-  {
+    {
     id: 6,
-    question: "Was ist 3 × 3?",
-    options: [
-      "8",
-      "6", 
-      "10",
-      "9"
-    ],
+    question: "Was ist 20 ÷ 4 + 15?",
+    options: ["18", "19", "20", "21"],
     correctAnswer: 3
   },
-  {
-    id: 7,
-    question: "Was ist 6 + 3?",
-    options: [
-      "9",
-      "8", 
-      "10",
-      "7"
-    ],
-    correctAnswer: 0
-  },
-  {
-    id: 8,
-    question: "Was ist 8 - 2?",
-    options: [
-      "5",
-      "4", 
-      "7",
-      "6"
-    ],
-    correctAnswer: 3
-  }
-])
+]);
 
 // Computed
 const currentQuestion = computed(() => {
@@ -311,6 +269,12 @@ const handleFinalContinue = () => {
   align-items: center;
   justify-content: center;
   font-weight: 500;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.answer-button:active {
+  transform: scale(0.9);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .answer-button.selected {
@@ -432,11 +396,6 @@ const handleFinalContinue = () => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.check-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
 }
 
 /* Responsive Design */
