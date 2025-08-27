@@ -24,7 +24,7 @@ const studyStartUrl = computed(() => {
     <div class="content-container">
       <h1 class="main-title">Willkommen zur Studie</h1>
        <p class="description">
-         Sie testen heute drei unterschiedliche Varianten einer digitalen Aufgabenumgebung. Wir nennen sie System 1, System 2 und System 3.
+         Sie testen heute drei Varianten einer digitalen Aufgabenumgebung. Wir nennen sie System 1, System 2 und System 3.
         </p>
       <div class="task-section">
         <h2 class="task-title">Ihre Aufgabe:</h2>
